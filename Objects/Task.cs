@@ -8,7 +8,7 @@ namespace ToDoList
   {
     private int _id;
     private string _description;
-
+    private int _categoryId;
     public Task(string Description, int CategoryId, int Id = 0)
     {
       _id = Id;
@@ -28,7 +28,7 @@ namespace ToDoList
         bool idEquality = (this.GetId() == newTask.GetId());
         bool descriptionEquality = (this.GetDescription() == newTask.GetDescription());
         bool categoryEquality = this.GetCategoryId() == newTask.GetCategoryId();
-        return (idEquality && descriptionEquality&& categoryEquality));
+        return (idEquality && descriptionEquality&& categoryEquality);
       }
     }
     public int GetCategoryId()
@@ -88,7 +88,7 @@ namespace ToDoList
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO tasks (description) OUTPUT INSERTED.id VALUES (@TaskDescription, @TaskCategoryId);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO tasks (description,Category_id) OUTPUT INSERTED.id VALUES (@TaskDescription, @TaskCategoryId);", conn);
 
       SqlParameter descriptionParameter = new SqlParameter();
       descriptionParameter.ParameterName = "@TaskDescription";
