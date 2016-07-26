@@ -11,6 +11,15 @@ namespace ToDoList
     Get["/"] = _ => {
       return View["index.cshtml"];
     };
+    Get["/due-date"] = _ => {
+      return View["dueDate_form.cshtml"];
+    };
+
+    Get["/duedate"] = _ => {
+      List<Task> AllTasks = Task.FindDueDate(Request.Query["latest-date"]);
+      return View["tasks.cshtml",AllTasks];
+    };
+
 
     Get["/tasks"] = _ => {
     List<Task> AllTasks = Task.GetAll();

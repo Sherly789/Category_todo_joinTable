@@ -185,7 +185,45 @@ namespace ToDoList
 
       return foundTask;
     }
+    public static List<Task> FindDueDate(DateTime date)
+    {
+      List<Task> newList=new List<Task>{};
+      SqlConnection conn = DB.Connection();
+      conn.Open();
 
+      SqlCommand cmd = new SqlCommand("SELECT * FROM tasks WHERE due_date < @DueDate;", conn);
+      SqlParameter taskDueDateParameter = new SqlParameter();
+      taskDueDateParameter.ParameterName = "@DueDate";
+      taskDueDateParameter.Value = date;
+      cmd.Parameters.Add(taskDueDateParameter);
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      int foundTaskId = 0;
+      string foundTaskDescription = null;
+      int foundTaskCategoryId = 0;
+      DateTime foundTaskDueDate = new DateTime(1573, 1, 1);
+
+      while(rdr.Read())
+      {
+        foundTaskId = rdr.GetInt32(0);
+        foundTaskDescription = rdr.GetString(1);
+        foundTaskCategoryId = rdr.GetInt32(2);
+        foundTaskDueDate=rdr.GetDateTime(3);
+        Task foundTask = new Task(foundTaskDescription,foundTaskCategoryId,foundTaskDueDate, foundTaskId);
+        newList.Add(foundTask);
+      }
+
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+
+      return newList;
+    }
 
   }
 }
