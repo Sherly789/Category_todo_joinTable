@@ -140,7 +140,7 @@ namespace ToDoList
 
       return foundTask;
     }
-    
+
     public void AddCategory(Category newCategory)
     {
       SqlConnection conn = DB.Connection();
